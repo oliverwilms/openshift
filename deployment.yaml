@@ -9,6 +9,13 @@ spec:
   selector:
     matchLabels:
       app: iris
+  strategy:
+    type: RollingUpdate   # Upgrade this application with a rolling strategy
+    rollingUpdate:
+      maxSurge: 1         # maximum number of pods that can be scheduled
+                          # above the desired number of pods (replicas)
+      maxUnavailable: 0   # the maximum number of pods that can be unavailable
+                          # during the update
   template:
     metadata:
       labels:
