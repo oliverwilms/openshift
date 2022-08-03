@@ -5,6 +5,7 @@ metadata:
   labels:
     app: iris
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: iris
