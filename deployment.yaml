@@ -25,6 +25,11 @@ spec:
       - image: helm-valip-quay-quay-quay.apps.vapo-aws-dsoi-dev.va.gov/helm/irishealth/irishealth:2022.1.0.209.0
         name: iris
         ports:
-        - containerPort: 8080
+        - name: superserver
+          containerPort: 1972
+          protocol: tcp
+        - name: webserver
+          containerPort: 52773
+          protocol: tcp
       imagePullSecrets:
       - name: vapo-quay-helm-valip-robot-chcgchdctc
