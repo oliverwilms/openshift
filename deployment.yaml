@@ -27,9 +27,9 @@ spec:
         ports:
         - name: superserver
           containerPort: 1972
-          protocol: tcp
+          protocol: TCP
         - name: webserver
           containerPort: 52773
-          protocol: tcp
+          protocol: TCP
       imagePullSecrets:
       - name: vapo-quay-helm-valip-robot-chcgchdctc
