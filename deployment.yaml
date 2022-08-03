@@ -33,3 +33,15 @@ spec:
           protocol: TCP
       imagePullSecrets:
       - name: vapo-quay-helm-valip-robot-chcgchdctc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: iris
+  ports:
+    - port: 52773
+      targetPort: 52773
