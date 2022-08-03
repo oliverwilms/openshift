@@ -35,7 +35,7 @@ spec:
       - name: vapo-quay-helm-valip-robot-chcgchdctc
 ---
 apiVersion: v1
-kind: Service
+kind: Service             # oc expose service/test-clusterip
 metadata:
   name: test-clusterip
 spec:
