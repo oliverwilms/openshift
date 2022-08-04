@@ -1,4 +1,5 @@
 ROUTINE %ZSTART
+#Include %occStatus
 %ZSTART ; User startup routine
 	Quit
 SYSTEM ; InterSystems IRIS starting
