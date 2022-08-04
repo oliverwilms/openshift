@@ -36,7 +36,7 @@ spec:
       volumes:
       - name: my-pv-storage
           persistentVolumeClaim:
-            claimName: iris-data-helm-valip-dev-iris-msgbank-data-0-0
+            claimName: iris-data-helm-valip-dev-iris-msgbank-data-0-0-clone
 ---
 apiVersion: v1
 kind: Service             # oc expose service/test-clusterip
