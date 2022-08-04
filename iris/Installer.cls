@@ -11,7 +11,7 @@ XData setup
       <Database Name="SCMDATA" Dir="/usr/irissys/mgr/SCMDATA" Create="yes" MountRequired="true" Resource="%DB_SCMDATA" PublicPermissions="" MountAtStartup="true"/>
       <ClassMapping Package="HS" From="HSLIB"/>
       <ClassMapping Package="HS.Local" From="HSCUSTOM"/>
-      <ClassMapping Package="HS.Local.VA.eSCM" From="SCMLIB"/>
+      <!-- ClassMapping Package="HS.Local.VA.eSCM" From="SCMLIB" --/>
       <RoutineMapping Routines="HS*" From="HSLIB"/>
     </Configuration>
       
