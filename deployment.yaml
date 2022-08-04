@@ -38,8 +38,8 @@ spec:
       - name: vapo-quay-helm-valip-robot-chcgchdctc
       volumes:
       - name: my-pv-storage
-          persistentVolumeClaim:
-            claimName: iris-data-helm-valip-dev-iris-msgbank-data-0-0-clone
+        persistentVolumeClaim:
+          claimName: iris-data-helm-valip-dev-iris-msgbank-data-0-0-clone
 ---
 apiVersion: v1
 kind: Service             # oc expose service/test-clusterip
