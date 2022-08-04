@@ -1,0 +1,11 @@
+; run installer to create namespace
+zn "%SYS"
+Do ##class(Security.Users).UnExpireUserPasswords("*")
+Do $SYSTEM.OBJ.Load("/opt/irisbuild/Installer.cls", "ck")
+set sc = ##class(User.Installer.MsgBank).setup()
+if 'sc w !,$System.Status.GetErrorText(sc),!
+If +sc=0 Do ##class(%SYSTEM.Process).Terminate(,1)
+Set tProp("Database")="SCMLIB"
+set sc=##Class(Config.MapRoutines).Create("%SYS","%ZSTART",.tProp)
+Do $SYSTEM.OBJ.Load("/opt/irisbuild/%ZSTART.mac", "ck")
+halt
