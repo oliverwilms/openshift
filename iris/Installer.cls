@@ -4,7 +4,7 @@ Class User.Installer.MsgBank
 XData setup
 {
 <Manifest>
-  <Default Name="SourceDir" Value="/opt/feeder/src"/>
+  <Default Name="SourceDir" Value="/opt/irisbuild"/>
   <Default Name="Namespace" Value="SCM_MB"/>
   <Namespace Name="SCM_MB" Create="yes" Code="SCMDATA" Ensemble="1" Data="SCMDATA">
     <Configuration>
