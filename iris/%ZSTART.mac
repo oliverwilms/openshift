@@ -1,0 +1,83 @@
+ROUTINE %ZSTART
+%ZSTART ; User startup routine
+	Quit
+SYSTEM ; InterSystems IRIS starting
+	New
+	Try {
+
+    Do ##class(%SYS.System).WriteToConsoleLog("%ZSTART Routine: "_"Begin Message Bank configuration",0,0)
+    Set tIRISDMPath = $P(##class(Config.Databases).DatabaseByName("SCMDATA"),"^",3)
+		Set dbOBJ = ##class(SYS.Database).%OpenId(tIRISDMPath)
+		If $ISOBJECT(dbOBJ) {
+			Set dbOBJ.ResourceName = "%DB_SCMDATA"
+			Set tSC = dbOBJ.%Save()
+			$$$ThrowOnError(tSC)
+			Do ##class(%SYS.System).WriteToConsoleLog("%ZSTART Routine: "_"Assign %DB_IRISDM resource",0,0)
+		}
+    If ##class(%File).DirectoryExists("/opt/users") {
+      Set tSC = ##class(Security.Users).Import("/opt/users/SCMusers.xml",.Num)
+			$$$ThrowOnError(tSC)
+			Do ##class(%SYS.System).WriteToConsoleLog("%ZSTART Routine: "_"Import Users",0,0)
+		}
+		If ##class(%File).DirectoryExists("/opt/csp") {
+			Set tSC = ##class(%File).CopyFile("/opt/csp/SCMCSP.ini","/irissys/data/IRIS/csp/bin/CSP.ini",1,.tOutput)
+			if 'tSC $$$ThrowStatus($$$ERROR($$$GeneralError,"Copy of SCMCSP.ini file failed with output of: "_tOutput))
+			s cmd="$ISC_PACKAGE_INSTALLDIR/httpd/bin/httpd -f $ISC_DATA_DIRECTORY/httpd/conf/httpd.conf -d $ISC_PACKAGE_INSTALLDIR/httpd -k restart"
+			Set outputfile=##class(%File).TempFilename("out")
+			Set rc=$zf(-1,cmd_" 2> """_outputfile_""""_" 1>&2")
+			if rc'=0 $$$ThrowStatus($$$ERROR($$$GeneralError,"restart of httpd failed - outputfile: "_outputfile))
+			Do ##class(%SYS.System).WriteToConsoleLog("%ZSTART Routine: "_"Copy CSP.ini",0,0)
+		}
+		If ##class(Config.Namespaces).Exists("IRISCLUSTER") {
+			
+			ZN "%SYS"
+			Set tSC=##Class(Config.Namespaces).Get("IRISCLUSTER",.tProperties)
+			Set tProp("Database")=tProperties("Globals")
+            If '##Class(Config.MapGlobals).Exists("SCM_MB","Ens.MessageBody*") {
+			set tSC=##Class(Config.MapGlobals).Create("SCM_MB","Ens.MessageBody*",.tProp)
+				$$$ThrowOnError(tSC)
+            }
+            If '##Class(Config.MapGlobals).Exists("SCM_MB","Ens.EntMsgBank*") {
+				set tSC=##Class(Config.MapGlobals).Create("SCM_MB","Ens.EntMsgBank*",.tProp)
+				$$$ThrowOnError(tSC)
+            }
+            If '##Class(Config.MapGlobals).Exists("SCM_MB","Ens.MsgBankSvr*") {
+				set tSC=##Class(Config.MapGlobals).Create("SCM_MB","Ens.MsgBankSvr*",.tProp)
+				$$$ThrowOnError(tSC)
+            }
+            If '##Class(Config.MapGlobals).Exists("SCM_MB","Ens.StreamContainerD") {
+				set tSC=##Class(Config.MapGlobals).Create("SCM_MB","Ens.StreamContainerD",.tProp)
+				$$$ThrowOnError(tSC)
+            }
+            If '##Class(Config.MapGlobals).Exists("SCM_MB","CacheStream") {
+				set tSC=##Class(Config.MapGlobals).Create("SCM_MB","CacheStream",.tProp)
+				$$$ThrowOnError(tSC)
+            }
+            If '##Class(Config.MapGlobals).Exists("SCM_MB","HS.Local.VFC75.MessageBank") {
+				set tSC=##Class(Config.MapGlobals).Create("SCM_MB","HS.Local.VFC75.MessageBank",.tProp)
+				$$$ThrowOnError(tSC)
+            }
+			Do ##class(%SYS.System).WriteToConsoleLog("%ZSTART Routine: "_"Created IRISCLUSTER Global mappings",0,0)
+			
+		}
+    Do ##class(%SYS.System).WriteToConsoleLog("%ZSTART Routine: "_"End configuration",0,0)
+  }
+  Catch exception {
+    If exception.%IsA("%Exception.SystemException") {
+      Do BACK^%ETN // Log error in error log
+    } Else {
+      Throw exception // We will just throw these to outer error handler
+    }
+    Quit
+  }
+  Quit
+LOGIN ; a user logs into InterSystems IRIS
+	Quit
+JOB ; JOB'd process begins
+	Quit
+	New
+	Try {
+	} Catch { }
+	Quit
+CALLIN ; process enters via CALLIN interface
+	Quit
