@@ -31,6 +31,9 @@ spec:
         - name: webserver
           containerPort: 52773
           protocol: TCP
+        volumeMounts:
+        - mountPath: "/irissys/data/"
+          name: my-pv-storage
       imagePullSecrets:
       - name: vapo-quay-helm-valip-robot-chcgchdctc
       volumes:
