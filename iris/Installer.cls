@@ -19,7 +19,7 @@ XData setup
     <!-- Invoke Class="%SYSTEM.OBJ" Method="Compile" CheckStatus="true">
       <Arg Value="HS.Local.VA.eSCM.Common.MsgBank.Production"/>
     </Invoke> -->
-    <Production Name="HS.Local.VA.eSCM.Common.MsgBank.Production" AutoStart="1" />
+    <!-- Production Name="HS.Local.VA.eSCM.Common.MsgBank.Production" AutoStart="1" /> -->
   </Namespace>
 
 <IfDef Var="Password">
