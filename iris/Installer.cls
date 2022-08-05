@@ -16,9 +16,9 @@ XData setup
     </Configuration>
       
     <Import File="${SourceDir}" Flags="ck" Recurse="1"/>
-    <Invoke Class="%SYSTEM.OBJ" Method="Compile" CheckStatus="true">
+    <!-- Invoke Class="%SYSTEM.OBJ" Method="Compile" CheckStatus="true">
       <Arg Value="HS.Local.VA.eSCM.Common.MsgBank.Production"/>
-    </Invoke>
+    </Invoke> -->
     <Production Name="HS.Local.VA.eSCM.Common.MsgBank.Production" AutoStart="1" />
   </Namespace>
 
