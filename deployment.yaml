@@ -22,7 +22,7 @@ spec:
         app: iris
     spec:
       containers:
-      - image: quay.vapo.va.gov/scm/irishealth/iris-scm-msgbank:2021.2.0.651.0
+      - image: helm-valip-quay-quay-quay.apps.vapo-aws-dsoi-dev.va.gov/helm/helm-valip-iris-hscustom:latest
         name: iris
         ports:
         - name: superserver
