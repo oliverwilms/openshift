@@ -1,0 +1,164 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iris
+  labels:
+    app: iris
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iris
+  strategy:
+    type: RollingUpdate   # Upgrade this application with a rolling strategy
+    rollingUpdate:
+      maxSurge: 1         # maximum number of pods that can be scheduled
+                          # above the desired number of pods (replicas)
+      maxUnavailable: 0   # the maximum number of pods that can be unavailable
+                          # during the update
+  template:
+    metadata:
+      labels:
+        app: iris
+    spec:
+      containers:
+      - image: helm-valip-quay-quay-quay.apps.vapo-aws-dsoi-dev.va.gov/helm/helm-valip-iris-data:1.0.11-0428187
+        name: iris
+        ports:
+        - name: superserver
+          containerPort: 1972
+          protocol: TCP
+        - name: webserver
+          containerPort: 52773
+          protocol: TCP
+        volumeMounts:
+        - name: iris-data
+          mountPath: /irissys/data/
+        - name: iris-wij
+          mountPath: /irissys/wij/
+        - name: iris-journal1
+          mountPath: /irissys/journal1/
+        - name: iris-journal2
+          mountPath: /irissys/journal2/
+      imagePullSecrets:
+      - name: vapo-quay-helm-valip-robot-chcgchdctc
+      volumes:
+      - name: iris-data
+        persistentVolumeClaim:
+          claimName: iris-data-helm-valip-sqa-iris-compute-2-clone
+      - name: iris-wij
+        persistentVolumeClaim:
+          claimName: iris-wij-helm-valip-sqa-iris-compute-2
+      - name: iris-journal1
+        persistentVolumeClaim:
+          claimName: iris-journal1-helm-valip-sqa-iris-compute-2
+      - name: iris-journal2
+        persistentVolumeClaim:
+          claimName: iris-journal2-helm-valip-sqa-iris-compute-2
+      - name: iris-cpf
+        configMap:
+          name: helm-valip-sqa-iris-compute
+          defaultMode: 420
+      - name: iris-key
+        secret:
+          secretName: iris-key-secret-46f8b28mk5
+          defaultMode: 420
+      - name: iris-backup-scripts
+        configMap:
+          name: iris-backup-scripts-dc49fgh82d
+          defaultMode: 493
+      - name: iris-ics
+        persistentVolumeClaim:
+          claimName: odf-ics
+      - name: iris-sftp
+        persistentVolumeClaim:
+          claimName: odf-sftp
+      - name: credentials
+        secret:
+          secretName: iris-scm-credentials-46f8b28mk5
+          defaultMode: 420
+      - name: lut
+        configMap:
+          name: iris-scm-lut-gk5bf2khg5
+          defaultMode: 420
+      - name: tasks-compute
+        configMap:
+          name: iris-scm-tasks-compute-hfhdddgh29
+          defaultMode: 420
+      - name: sds-all
+        projected:
+          sources:
+          - configMap:
+              name: iris-scm-sds-d2t4tm686f
+              items:
+                - key: SDS.xml
+                  path: SDS.xml
+          - configMap:
+              name: iris-scm-sds-env-52bbb8m9f9
+              items:
+                - key: SDS_ENV.xml
+                  path: SDS_ENV.xml
+          defaultMode: 420
+      - name: csp
+        configMap:
+          name: iris-scm-csp-9fck2mm97g
+          defaultMode: 420
+      - name: iris-scm-certs-dod-hc
+        secret:
+          secretName: iris-scm-certs-dod-hc-46f8b28mk5
+          defaultMode: 420
+      - name: iris-scm-certs-escm-hc
+        secret:
+          secretName: iris-scm-certs-escm-hc-46f8b28mk5
+          defaultMode: 420
+      - name: iris-scm-certs-valip-hc
+        secret:
+          secretName: iris-scm-certs-valip-hc-46f8b28mk5
+          defaultMode: 420
+      - name: users
+        secret:
+          secretName: iris-scm-users-46f8b28mk5
+          defaultMode: 420
+      - name: iris-scm-dirs
+        configMap:
+          name: iris-scm-dirs-6549ktckkt
+          defaultMode: 420
+      - name: cfg-item-status
+        configMap:
+          name: iris-scm-cfg-item-status-f848hthf4k
+          defaultMode: 420
+      - name: kube-api-access-r42j9
+        projected:
+          sources:
+            - serviceAccountToken:
+                expirationSeconds: 3607
+                path: token
+            - configMap:
+                name: kube-root-ca.crt
+                items:
+                  - key: ca.crt
+                    path: ca.crt
+            - downwardAPI:
+                items:
+                  - path: namespace
+                    fieldRef:
+                      apiVersion: v1
+                      fieldPath: metadata.namespace
+            - configMap:
+                name: openshift-service-ca.crt
+                items:
+                  - key: service-ca.crt
+                    path: service-ca.crt
+          defaultMode: 420
+---
+apiVersion: v1
+kind: Service             # oc expose service/test-clusterip
+metadata:
+  name: test-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: iris
+  ports:
+    - port: 52773
+      targetPort: 52773
