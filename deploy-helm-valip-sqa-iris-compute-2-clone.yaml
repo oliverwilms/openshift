@@ -22,7 +22,7 @@ spec:
         app: iris
     spec:
       containers:
-      - image: helm-valip-quay-quay-quay.apps.vapo-aws-dsoi-dev.va.gov/helm/helm-valip-iris-data:1.0.11-0428187
+      - image: quay-quay-helm-valip-quay.apps.vapo-aws-valip-dev.va.gov/helm/helm-valip-iris-compute:1.0.14-3d0cb04
         name: iris
         ports:
         - name: superserver
