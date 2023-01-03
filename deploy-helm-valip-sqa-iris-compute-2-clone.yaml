@@ -48,13 +48,13 @@ spec:
           claimName: iris-data-helm-valip-sqa-iris-compute-2-clone
       - name: iris-wij
         persistentVolumeClaim:
-          claimName: iris-wij-helm-valip-sqa-iris-compute-2
+          claimName: iris-wij-helm-valip-sqa-iris-compute-2-clone
       - name: iris-journal1
         persistentVolumeClaim:
-          claimName: iris-journal1-helm-valip-sqa-iris-compute-2
+          claimName: iris-journal1-helm-valip-sqa-iris-compute-2-clone
       - name: iris-journal2
         persistentVolumeClaim:
-          claimName: iris-journal2-helm-valip-sqa-iris-compute-2
+          claimName: iris-journal2-helm-valip-sqa-iris-compute-2-clone
       - name: iris-cpf
         configMap:
           name: helm-valip-sqa-iris-compute
