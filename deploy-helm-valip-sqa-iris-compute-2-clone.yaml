@@ -24,6 +24,11 @@ spec:
       containers:
       - image: quay-quay-helm-valip-quay.apps.vapo-aws-valip-dev.va.gov/helm/helm-valip-iris-compute:1.0.14-3d0cb04
         name: iris
+        env:
+        - name: ISC_CPF_MERGE_FILE
+          value: /irissys/cpf/compute.cpf
+        - name: ISC_DATA_DIRECTORY
+          value: /irissys/data/IRIS
         ports:
         - name: superserver
           containerPort: 1972
